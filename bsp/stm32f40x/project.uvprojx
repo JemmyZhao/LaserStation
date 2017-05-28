@@ -147,7 +147,7 @@
             <RestoreSysVw>1</RestoreSysVw>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>6</TargetSelection>
+          <TargetSelection>11</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
             <CpuDllArguments></CpuDllArguments>
@@ -161,7 +161,7 @@
             <PeripheralDll></PeripheralDll>
             <PeripheralDllArguments></PeripheralDllArguments>
             <InitializationFile></InitializationFile>
-            <Driver>Segger\JL2CM3.dll</Driver>
+            <Driver>STLink\ST-LINKIII-KEIL_SWO.dll</Driver>
           </TargetDlls>
         </DebugOption>
         <Utilities>
@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.;..\..\components\drivers\include;..\..\components\finsh;..\..\include;..\..\libcpu\arm\common;..\..\libcpu\arm\cortex-m4;Libraries\CMSIS\Include;Libraries\CMSIS\ST\STM32F4xx\Include;Libraries\STM32F4xx_StdPeriph_Driver\inc;applications;drivers;..\..\components\drivers\include\drivers;..\..\components\drivers\sensors;..\..\app\IMU</IncludePath>
+              <IncludePath>.;..\..\components\drivers\include;..\..\components\finsh;..\..\include;..\..\libcpu\arm\common;..\..\libcpu\arm\cortex-m4;Libraries\CMSIS\Include;Libraries\CMSIS\ST\STM32F4xx\Include;Libraries\STM32F4xx_StdPeriph_Driver\inc;applications;drivers;..\..\components\drivers\include\drivers;..\..\components\drivers\sensors;..\..\app\IMU;..\..\app\ESP8266;..\..\app</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -867,6 +867,46 @@
               <FileName>stm32_hw_spi.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\app\IMU\stm32_hw_spi.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>ESP8266</GroupName>
+          <Files>
+            <File>
+              <FileName>ESP8266.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\app\ESP8266\ESP8266.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ESPListener.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\app\ESP8266\ESPListener.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>MadgwickAHRS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\app\ESP8266\MadgwickAHRS.c</FilePath>
+            </File>
+            <File>
+              <FileName>retarget.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\app\ESP8266\retarget.c</FilePath>
+            </File>
+            <File>
+              <FileName>SerialPort.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\app\ESP8266\SerialPort.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>sserial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\app\ESP8266\sserial.c</FilePath>
+            </File>
+            <File>
+              <FileName>MyESPListener.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\app\ESP8266\Script\MyESPListener.cpp</FilePath>
             </File>
           </Files>
         </Group>
