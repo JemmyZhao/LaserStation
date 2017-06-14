@@ -16,17 +16,6 @@
 #include <board.h>
 #include <rtthread.h>
 #include "station.h"
-#include "mpu6500.h"
-
-#include "ESP8266.h"
-#include "Script/MyESPListener.h"
-#include "stdio.h"
-
-#ifdef __cplusplus
-extern "C"{
-	#include "MadgwickAHRS.h"
-}
-#endif
 
 
 #ifdef  __cplusplus
@@ -46,37 +35,18 @@ extern "C" {
 #endif
 
 	
-//Station laserstation;
+//Station laser_station();
+
 MPU6500 imu("mp65");
-
-//esp refference
-ESP8266* esp;
-MyESPListener* espListener;
-
+	
 void init_all()
 {
-	//station = Station();
 	imu.mpu_init(0, BITS_DLPF_CFG_20HZ);
 	imu.set_acc_scale(BITS_FS_8G);
 	imu.set_gyro_scale(BITS_FS_2000DPS);
 	
 	imu.gyroOffsetCalibration();
 
-	//wifi test: init and log
-	SerialPort* uart1 = SerialPort::getSerialPort(SerialPort::TUSART1);
-	espListener = new MyESPListener(NULL);
-	esp = new ESP8266(SerialPort::TUSART1, espListener);
-	esp->start();
-	char log[100];
-	while(true){
-		if(espListener->isCanSendInTTMode()){
-			//格式：@片子名字#x#y#z#w$\r\n
-			sprintf(log, "@TestChip#%d#%d#%d#%d$\r\n\0", (int)(q1 * 10000), (int)(q2 * 10000), (int)(q3* 10000), (int)(q0 * 10000));
-			q1 += 0.001f;
-			uart1->sendDate(log, strlen(log));
-			rt_thread_delay(RT_TICK_PER_SECOND / 2);
-		}
-	}
 }
 	
 
@@ -100,7 +70,6 @@ void rt_init_thread_entry(void* parameter)
     gdb_set_device("uart6");
     gdb_start();
 #endif
-    init_all();
     /* LwIP Initialization */
 #ifdef RT_USING_LWIP
     {
