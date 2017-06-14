@@ -44,9 +44,9 @@ void SerialPort::uart1_poll_thread(void* parameter){
 	char uart_rx_buffer[1024];
 	SerialPort* uart1 = NULL;
 	while(true){
-		//SerialPort *port1 = SerialPort::getSerialPort(SerialPort::TUSART1);
-		//rt_device_write(port1->uartDev, 0, "hhhh", 4);
-		//continue;
+		/*SerialPort *port1 = SerialPort::getSerialPort(SerialPort::TUSART1);
+		rt_device_write(port1->uartDev, 0, "hhhh", 4);
+		continue;*/
 		
 		rt_err_t result = rt_mq_recv(uart1_rx_mq, &msg, sizeof(struct rx_msg), 50);
 		if (result == RT_ETIMEOUT)
@@ -66,8 +66,10 @@ void SerialPort::uart1_poll_thread(void* parameter){
 			
 			if(rx_length <= 0)continue;
 			
+			
+			//data receive callback
 			uart1 = SerialPort::getSerialPort(SerialPort::TUSART1);
-			if(uart1 != NULL){
+			if(uart1 != NULL && uart1->ListenerPool != NULL){
 				uint8_t size = uart1->ListenerPool->size();
 				for(uint8_t i = 0; i < size; i++){
 					SerialPortListener* listener = (*(uart1->ListenerPool))[i];
@@ -78,7 +80,7 @@ void SerialPort::uart1_poll_thread(void* parameter){
 			}
 		}
 
-
+		
 		//rt_thread_delay(RT_TICK_PER_SECOND / 2);
 	}
 }
@@ -157,7 +159,7 @@ SerialPort* SerialPort::getSerialPort(SerialPort::Type PortType){
 								RT_IPC_FLAG_FIFO);
 				
 				rt_device_set_rx_indicate(portToMake->uartDev, SerialPort::uart1_rx_ind);
-				
+								
 				portToMake->portThread = rt_thread_create("uart1_port_thread",
 				uart1_poll_thread, RT_NULL,
 				2048, RT_THREAD_PRI_HIGH, 20);

@@ -15,6 +15,8 @@
 
 #include <board.h>
 #include <rtthread.h>
+//#include "SerialPort.h"
+//#include <stdio.h>
 #include "station.h"
 
 
@@ -35,18 +37,15 @@ extern "C" {
 #endif
 
 	
-//Station laser_station();
 
-MPU6500 imu("mp65");
+
+//MPU6500 imu("mp65");
+Station *laser_station;
 	
 void init_all()
 {
-	imu.mpu_init(0, BITS_DLPF_CFG_20HZ);
-	imu.set_acc_scale(BITS_FS_8G);
-	imu.set_gyro_scale(BITS_FS_2000DPS);
+	laser_station = new Station();
 	
-	imu.gyroOffsetCalibration();
-
 }
 	
 
@@ -54,6 +53,7 @@ void init_all()
 void mpu6050_thread_entry(void* parameter)
 {
 		//station.update();
+		
 }
 
 void print_thread_entry(void* parameter)
@@ -85,6 +85,8 @@ void rt_init_thread_entry(void* parameter)
         rt_kprintf("TCP/IP initialized!\n");
     }
 #endif
+	
+	init_all();
 }
 
 int rt_application_init()
@@ -98,23 +100,24 @@ int rt_application_init()
 
     if (tid != RT_NULL)
         rt_thread_startup(tid);
+	
+	
+	
+	mpu_thread = rt_thread_create("mpu",
+		mpu6050_thread_entry, RT_NULL,
+		2048, RT_THREAD_PRIORITY_MAX/3+3, 10);
+	
+	if (mpu_thread != RT_NULL)
+		rt_thread_startup(mpu_thread);
+	
+	print_thread = rt_thread_create("pirnt",
+		 print_thread_entry, RT_NULL,
+	   2048, RT_THREAD_PRIORITY_MAX/3+4, 10);
+	
+	if(print_thread != RT_NULL)
+		rt_thread_startup(print_thread);
 		
-		
-		mpu_thread = rt_thread_create("mpu",
-		    mpu6050_thread_entry, RT_NULL,
-		    2048, RT_THREAD_PRIORITY_MAX/3+3, 10);
-		
-		if (mpu_thread != RT_NULL)
-			rt_thread_startup(mpu_thread);
-		
-		print_thread = rt_thread_create("pirnt",
-			 print_thread_entry, RT_NULL,
-		   2048, RT_THREAD_PRIORITY_MAX/3+4, 10);
-		
-		if(print_thread != RT_NULL)
-			rt_thread_startup(print_thread);
-		
-		
+	
 
     return 0;
 }
