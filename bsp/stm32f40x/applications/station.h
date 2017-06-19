@@ -3,6 +3,8 @@
 #include "Script/MyESPListener.h"
 #include "stdio.h"
 #include "chProtocol.h"
+#include <rtdevice.h>
+#include "imu.h"
 
 
 class Station
@@ -12,11 +14,21 @@ class Station
 	  ESP8266* esp;
 		MyESPListener* espListener;
 	  SerialPort* uart;
+
 	
 	public:
+		
 		Station();
+	  
+		Attitude* attitude;
+	  Codec* codec;
+		uint8_t tx_buf[MAX_MAV_LENTH];
 	
-	  void update_attitude(void);
+	  void init_station();
+	  void update_compute(void);
 	  void run_motor(void);
 	  void cal_position(void);
+	  void get_attitude(float* quat);
+	
+	  void send_attitude(uint32_t delay_time);
 };

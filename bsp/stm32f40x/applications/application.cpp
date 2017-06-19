@@ -35,37 +35,55 @@ extern "C" {
 #endif
 
 	
-//Station laser_station();
 
-MPU6500 imu("mp65");
+
+//MPU6500 imu("mp65");
+Station *laser_station;// = new Station();
 	
 void init_all()
 {
-	imu.mpu_init(0, BITS_DLPF_CFG_20HZ);
-	imu.set_acc_scale(BITS_FS_8G);
-	imu.set_gyro_scale(BITS_FS_2000DPS);
+	//imu.mpu_init(0, BITS_DLPF_CFG_20HZ);
+	//imu.set_acc_scale(BITS_FS_8G);
+	//imu.set_gyro_scale(BITS_FS_2000DPS);
 	
-	imu.gyroOffsetCalibration();
-
+	//imu.gyroOffsetCalibration();
+	laser_station = new Station();
+  laser_station->init_station();
 }
 	
-
-
-void mpu6050_thread_entry(void* parameter)
+void station_compute_update_entry(void* parameter)
 {
-		//station.update();
+	rt_thread_delay(2000);
+	while(1)
+	{
+		laser_station->update_compute();
+		rt_thread_delay(1);
+	}
 }
 
-void print_thread_entry(void* parameter)
+void send_data_to_computer_entry(void* parameter)
 {
-	 //station.printAccGyro();
+	rt_tick_t now_time, last_time;
+	rt_thread_delay(2000);
+	float quat[4];
+	now_time = rt_tick_get();
+	while(1)
+	{
+		last_time = now_time;
+		now_time = rt_tick_get();
+		laser_station->send_attitude((uint32_t)(now_time-last_time));
+		laser_station->get_attitude(quat);
+		rt_kprintf("%d \t %d \t %d \t %d\n", (int)(1000*quat[0]), (int)(1000*quat[1]), (int)(1000*quat[2]), (int)(1000*quat[3]));
+		rt_thread_delay(10);
+	}
+
 }
 
-	
 
 void rt_init_thread_entry(void* parameter)
 {
     /* GDB STUB */
+	  init_all();
 #ifdef RT_USING_GDB
     gdb_set_device("uart6");
     gdb_start();
@@ -89,7 +107,7 @@ void rt_init_thread_entry(void* parameter)
 
 int rt_application_init()
 {
-    rt_thread_t tid, mpu_thread, print_thread;
+    rt_thread_t tid, station_compute_update, send_data_to_computer;
 	
 
     tid = rt_thread_create("init",
@@ -100,19 +118,24 @@ int rt_application_init()
         rt_thread_startup(tid);
 		
 		
-		mpu_thread = rt_thread_create("mpu",
-		    mpu6050_thread_entry, RT_NULL,
-		    2048, RT_THREAD_PRIORITY_MAX/3+3, 10);
+		station_compute_update = rt_thread_create("station_compute_update",
+		                                          station_compute_update_entry, RT_NULL,
+		                                          1024, RT_THREAD_PRIORITY_MAX/3+1, 10);
+		if(station_compute_update != RT_NULL)
+			rt_thread_startup(station_compute_update);
 		
-		if (mpu_thread != RT_NULL)
-			rt_thread_startup(mpu_thread);
+		send_data_to_computer = rt_thread_create("send_data_to_computer",
+		                                         send_data_to_computer_entry, RT_NULL,
+		                                         1024, RT_THREAD_PRIORITY_MAX/3+2, 20);
+		if(send_data_to_computer != RT_NULL)
+			rt_thread_startup(send_data_to_computer);
 		
-		print_thread = rt_thread_create("pirnt",
-			 print_thread_entry, RT_NULL,
-		   2048, RT_THREAD_PRIORITY_MAX/3+4, 10);
+
 		
-		if(print_thread != RT_NULL)
-			rt_thread_startup(print_thread);
+
+		
+		
+
 		
 		
 

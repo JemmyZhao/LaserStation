@@ -18,10 +18,10 @@ private:
 
 public:
     MyESPListener(SerialPort* usbLogPort):usbPort(usbLogPort),isCanSendByTTMODE(FALSE){
-		ip = "192.168.1.107";
+		ip = "192.168.199.107";
 		port = "8888";
-		wifiName = "ziroom501";
-		wifipsw = "4001001111";
+		wifiName = "HiWiFi_zz";
+		wifipsw = "opq56789";
 		pendtime = RT_TICK_PER_SECOND / 4;
 	}
 

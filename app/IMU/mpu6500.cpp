@@ -218,7 +218,7 @@ uint8_t MPU6500::set_acc_scale(uint8_t scale)
     }
     accel_scale = 1.0f/accel_scale * CONSTANTS_ONE_G * 1.0f;
     
-    rt_thread_delay(1); // 10ms
+    rt_thread_delay(10); // 10ms
     send_buf[0] = MPUREG_ACCEL_CONFIG | READ_FLAG;
     rt_spi_send_then_recv(this->mpu6500_device,&send_buf[0],1,&recv,1);
     switch (recv)
@@ -275,7 +275,7 @@ uint16_t MPU6500::set_gyro_scale(uint8_t scale)
     }
     gyro_scale = 1.0f/gyro_scale * DEG_TO_RAD * 1.0f;
     
-    rt_thread_delay(1); // 10ms
+    rt_thread_delay(10); // 10ms
     send_buf[0] = MPUREG_GYRO_CONFIG | READ_FLAG;
     rt_spi_send_then_recv(this->mpu6500_device,&send_buf[0],1,&recv,1);
     switch (recv)

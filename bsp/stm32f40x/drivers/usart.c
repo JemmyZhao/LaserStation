@@ -23,6 +23,7 @@
 #include <rtdevice.h>
 
 /* UART GPIO define. */
+
 #define UART1_GPIO_TX       GPIO_Pin_6
 #define UART1_TX_PIN_SOURCE GPIO_PinSource6
 #define UART1_GPIO_RX       GPIO_Pin_7
@@ -30,6 +31,8 @@
 #define UART1_GPIO          GPIOB
 #define UART1_GPIO_RCC      RCC_AHB1Periph_GPIOB
 #define RCC_APBPeriph_UART1 RCC_APB2Periph_USART1
+
+
 
 #define UART2_GPIO_TX       GPIO_Pin_2
 #define UART2_TX_PIN_SOURCE GPIO_PinSource2

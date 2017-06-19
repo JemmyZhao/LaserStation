@@ -17,14 +17,14 @@ void ESPListener::readThread( ){
 	while(true){
 		
 		if( lastDataInTime < 2 || rxBuffer.size() <= 0){
-			rt_thread_delay(10);
+			rt_thread_delay(100);
 			continue;
 		}
 		
 		rt_err_t result = rt_sem_take(sem, 10);
 		if(result != RT_EOK){
 			rt_sem_release(sem);
-			rt_thread_delay(10);
+			rt_thread_delay(100);
 			continue;
 		}
 			

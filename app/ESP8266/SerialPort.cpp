@@ -67,7 +67,7 @@ void SerialPort::uart1_poll_thread(void* parameter){
 			if(rx_length <= 0)continue;
 			
 			uart1 = SerialPort::getSerialPort(SerialPort::TUSART1);
-			if(uart1 != NULL){
+			if(uart1 != NULL && uart1->ListenerPool != NULL){
 				uint8_t size = uart1->ListenerPool->size();
 				for(uint8_t i = 0; i < size; i++){
 					SerialPortListener* listener = (*(uart1->ListenerPool))[i];

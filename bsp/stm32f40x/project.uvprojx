@@ -839,6 +839,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\app\IMU\stm32_hw_spi.c</FilePath>
             </File>
+            <File>
+              <FileName>imu.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\app\IMU\imu.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -888,6 +893,11 @@
               <FileName>chProtocol.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\..\app\Communication\chProtocol.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>mavlink_com.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\app\Communication\mavlink_com.cpp</FilePath>
             </File>
           </Files>
         </Group>
