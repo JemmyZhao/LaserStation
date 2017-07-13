@@ -193,5 +193,12 @@ EBOOL ESP8266::setCipMode(uint8_t cipMode){
     return TRUE;
 }
 
+EBOOL ESP8266::connPC(char* ip, char* port, char* wifiName, char* wifiPsw){
+	if(mUartPort == NULL)return FALSE;
+	sprintf(cmdTemp, "AT+CONNPC=\"%s\",%s,\"%s\",\"%s\"\r\n\0", ip, port, wifiName, wifiPsw);
+	mUartPort->sendDate(cmdTemp,strlen(cmdTemp));
+	return TRUE;
+}
+
 
 

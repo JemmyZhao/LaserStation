@@ -17,6 +17,7 @@ void 	Attitude::start_init()
 	  quat[0] = 1;
 	  quat[1]=quat[2]=quat[3]=0;
 	  sampleFreq = 1000;
+	  beta = 0.01;
 }
 
 void Attitude::update()

@@ -34,6 +34,7 @@ void ESPListener::readThread( ){
 		
 		rt_sem_release(sem);
 		
+		//rt_kprintf(date);
 		
 		if(isFindStr("ready",5, date,len))
 		{

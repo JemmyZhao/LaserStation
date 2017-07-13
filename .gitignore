@@ -1,3 +1,4 @@
 *.uvguix.*
 /bsp/stm32f40x/build/
 bsp/stm32f40x/rtthread.bin
+*.TMP

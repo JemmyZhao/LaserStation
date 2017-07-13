@@ -13,10 +13,14 @@ void MyESPListener::onReady(){//boot/reboot signal
 	#endif
 	
     isCanSendByTTMODE = FALSE;
-    rt_thread_delay(RT_TICK_PER_SECOND);
-    mESP8266->connectWIFI(wifiName,wifipsw);
+	rt_thread_delay(RT_TICK_PER_SECOND/4);
+
+    //mESP8266->connectWIFI(wifiName,wifipsw);
 	
+	mESP8266->connPC(ip, port, wifiName, wifipsw);
 	
+	rt_thread_delay(RT_TICK_PER_SECOND/4);
+	isCanSendByTTMODE = TRUE;
 }
 
 void MyESPListener::onWifiConnectOK(){

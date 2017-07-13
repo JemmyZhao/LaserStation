@@ -48,6 +48,7 @@ void Station::get_attitude(float* quat)
 
 void Station::send_attitude(uint32_t delay_time)
 {
+	if(espListener->isCanSendInTTMode() == FALSE) return ;
 	uint32_t len;
 	len = codec->attitude_quat_packing(tx_buf, 
 	                             delay_time, attitude->q0, attitude->q1, attitude->q2, attitude->q3,

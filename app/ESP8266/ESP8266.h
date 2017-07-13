@@ -71,6 +71,9 @@ public:
 
     EBOOL setCipMode(uint8_t cipMode);
     
+	
+	EBOOL connPC(char* ip, char* port, char* wifiName, char* wifiPsw);
+
 };
 
 

@@ -73,8 +73,9 @@ void send_data_to_computer_entry(void* parameter)
 		now_time = rt_tick_get();
 		laser_station->send_attitude((uint32_t)(now_time-last_time));
 		laser_station->get_attitude(quat);
-		rt_kprintf("%d \t %d \t %d \t %d\n", (int)(1000*quat[0]), (int)(1000*quat[1]), (int)(1000*quat[2]), (int)(1000*quat[3]));
-		rt_thread_delay(10);
+		
+		//rt_kprintf("%d \t %d \t %d \t %d\n", (int)(1000*quat[0]), (int)(1000*quat[1]), (int)(1000*quat[2]), (int)(1000*quat[3]));
+		rt_thread_delay(4);
 	}
 
 }
@@ -83,6 +84,7 @@ void send_data_to_computer_entry(void* parameter)
 void rt_init_thread_entry(void* parameter)
 {
     /* GDB STUB */
+	  rt_thread_delay(RT_TICK_PER_SECOND / 2);
 	  init_all();
 #ifdef RT_USING_GDB
     gdb_set_device("uart6");
